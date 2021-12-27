@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import zipfile
 import datetime
+import sklearn.metrics.confusion_matrix
 
 def dataset_to_numpy(dataset, batched = False, only_labels = False):
   """
