@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import zipfile
 import datetime
 
-def dataset_to_numpy(dataset, batched = False):
+def dataset_to_numpy(dataset, batched = False, only_labels = False):
   """
   Converts dataset to numpy array. 
   If batched = True it returns numpy array with dataset batch split.
@@ -17,8 +17,11 @@ def dataset_to_numpy(dataset, batched = False):
   if not batched:
     data_out = np.concatenate(data_out, axis = 0)
     labels_out = np.concatenate(labels_out, axis = 0)
-
-  return data_out, labels_out
+  
+  if only_labels:
+    return labels_out
+  else:
+    return data_out, labels_out
 
 def load_and_prep_image(filename, img_shape = 224, scale=True):
   """
