@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import zipfile
 import datetime
-
+import pandas as pd
 import itertools
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix,  classification_report
 
 def dataset_to_numpy(dataset, batched = False, only_labels = False):
   """
@@ -244,6 +244,26 @@ def compare_historys(original_history, new_history, initial_epochs=5):
     plt.title('Training and Validation Loss')
     plt.xlabel('epoch')
     plt.show()
+
+def getClassificationReport(y_true, y_pred, class_names, plot = True, metric = "f1-score"):
+  classification_report_dict = classification_report(y_true, y_pred, output_dict = True)
+
+  class_F1_scores = {}
+  
+  for k, v in classification_report_dict.items():
+    if k == "accuracy":
+      break
+    else:
+      class_F1_scores[class_names[int(k)]] = v[metric]
+  
+  f1_scores = pd.DataFrame.from_dict(class_F1_scores, orient = 'index')
+  f1_scores.columns = [metric]
+  f1_scores = f1_scores.sort_values(metric, ascending = False)
+
+  if plot:
+    f1_scores.plot(kind = 'bar', stacked = False, figsize = (30,10))
+  else:
+    return f1_scores
 
 def getTensorboardCmd():
   return """%load_ext tensorboard \n%tensorboard --logdir /content/Tensorboard_scaling_up"""
