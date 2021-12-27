@@ -235,3 +235,5 @@ def compare_historys(original_history, new_history, initial_epochs=5):
     plt.xlabel('epoch')
     plt.show()
 
+def getTensorboardCmd():
+  return """%load_ext tensorboard \n%tensorboard --logdir /content/Tensorboard_scaling_up"""
