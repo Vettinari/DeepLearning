@@ -7,6 +7,30 @@ import datetime
 import pandas as pd
 import itertools
 from sklearn.metrics import confusion_matrix,  classification_report
+import smtplib, ssl
+
+class EmailCallback(tf.keras.callbacks.Callback):
+  
+  def __init__(self, 
+               sender_email = None, 
+               password = None, 
+               receiver_email = None,
+               smtp_server = "smtp.gmail.com", 
+               port = 465):
+    
+        super().__init__()
+        self.sender_email = sender_email
+        self.password = password
+        self.receiver_email = receiver_email
+        self.smtp_server = smtp_server
+        self.port = port
+
+  def on_train_end(self, logs=None):
+    message = f"Google Colab has ended model training\nAccuracy of: {logs['accuracy']}\nValidation accuracy: {logs['val_accuracy']}"
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(self.smtp_server, self.port, context=context) as server:
+      server.login(self.sender_email, self.password)
+      server.sendmail(self.sender_email, self.receiver_email, message)
 
 class TerminateOnCrossing(tf.keras.callbacks.Callback):
   """
