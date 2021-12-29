@@ -7,6 +7,22 @@ import pandas as pd
 import itertools
 from sklearn.metrics import confusion_matrix,  classification_report
 
+class TerminateOnCrossing(keras.callbacks.Callback):
+  """
+  Simple callback preventing overfitting for models.
+  Invoke without argument.
+  It uses "val_accuracy" and "accuracy" on default.
+  """
+  def on_epoch_end(self, epoch, logs=None):
+    val_accuracy = logs['val_accuracy']
+    accuracy = logs['accuracy']
+
+    if val_accuracy < accuracy:
+      print("Model has stopped training due to accuracy being higher than validation accuracy!")
+      model.stop_training = True
+    else:
+      pass
+
 def dataset_to_numpy(dataset, batched = False, only_labels = False):
   """
   Converts dataset to numpy array. 
