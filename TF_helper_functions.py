@@ -7,7 +7,7 @@ import pandas as pd
 import itertools
 from sklearn.metrics import confusion_matrix,  classification_report
 
-class TerminateOnCrossing(keras.callbacks.Callback):
+class TerminateOnCrossing(tf.keras.callbacks.Callback):
   """
   Simple callback preventing overfitting for models.
   Invoke without argument.
